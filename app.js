@@ -43,37 +43,67 @@ const buses = [
 ["11:52","490","Bourget / Saint-Charles"]
 ];
 
+const result = document.getElementById("result");
+
 const now = new Date();
 const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-let upcoming = [];
+let upcoming = buses.filter(bus => {
+    const [h,m] = bus[0].split(":").map(Number);
+    return (h * 60 + m) >= currentMinutes;
+});
 
-for (const bus of buses) {
-    const [h, m] = bus[0].split(":").map(Number);
-    const mins = h * 60 + m;
+let html = `
+<h3>Current Time</h3>
+<p>${now.toLocaleTimeString()}</p>
+`;
 
-    if (mins >= currentMinutes) {
-        upcoming.push(bus);
-    }
-}
+if (upcoming.length > 0) {
 
-const result = document.getElementById("result");
+    const next = upcoming[0];
 
-if (upcoming.length === 0) {
-    result.innerHTML = "<h3>No more morning buses today.</h3>";
-} else {
-    let html = "<h3>Next Buses</h3>";
+    const [h,m] = next[0].split(":").map(Number);
+    const wait = (h * 60 + m) - currentMinutes;
 
-    upcoming.slice(0, 5).forEach(bus => {
-        html += `
-            <p>
-                <b>${bus[0]}</b><br>
-                Bus ${bus[1]}<br>
-                ${bus[2]}
-            </p>
-            <hr>
-        `;
+    html += `
+    <div style="
+        background:#dff6dd;
+        padding:15px;
+        border-radius:10px;
+        margin-top:10px;
+    ">
+        <h2>✅ Recommended Bus</h2>
+
+        <p><b>Time:</b> ${next[0]}</p>
+        <p><b>Bus:</b> ${next[1]}</p>
+        <p><b>Stop:</b> ${next[2]}</p>
+        <p><b>Leaves In:</b> ${wait} minute(s)</p>
+    </div>
+
+    <h3>Next 5 Buses</h3>
+    `;
+
+    upcoming.slice(0,5).forEach(bus => {
+        html += `<p>${bus[0]} | Bus ${bus[1]} | ${bus[2]}</p>`;
     });
 
-    result.innerHTML = html;
+} else {
+
+    html += `
+    <div style="
+        background:#fff3cd;
+        padding:15px;
+        border-radius:10px;
+    ">
+        <h2>🌙 Tomorrow's First Bus</h2>
+
+        <p><b>05:27</b> | Bus 491 | Gare Vaudreuil</p>
+        <p><b>05:31</b> | Bus 491 | Plaza Vaudreuil</p>
+        <p><b>05:45</b> | Bus 491 | Gare Vaudreuil</p>
+        <p><b>05:49</b> | Bus 491 | Plaza Vaudreuil</p>
+        <p><b>06:05</b> | Bus 490 | Gare Vaudreuil</p>
+    </div>
+    `;
 }
+
+result.innerHTML = html;
