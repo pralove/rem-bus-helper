@@ -33,7 +33,32 @@ const buses = [
   ["11:52", "490", "Bourget / Saint-Charles"]
 ];
 
+const remTimes = [
+  "08:10","08:24","08:38","08:52",
+  "09:06","09:20","09:34","09:48",
+  "10:02","10:16","10:30","10:44","10:58",
+  "11:12","11:26"
+];
+
 const result = document.getElementById("result");
+
+function nextREM(busTime) {
+
+    const [busH, busM] = busTime.split(":").map(Number);
+    const busMinutes = busH * 60 + busM;
+
+    for (const rem of remTimes) {
+
+        const [remH, remM] = rem.split(":").map(Number);
+        const remMinutes = remH * 60 + remM;
+
+        if (remMinutes >= busMinutes) {
+            return rem;
+        }
+    }
+
+    return "-";
+}
 
 function updateBusDisplay() {
 
@@ -64,11 +89,12 @@ function updateBusDisplay() {
                 border-radius:10px;
                 margin-top:10px;
             ">
-                <h2>✅ Recommended Bus</h2>
+                <h2>✅ Recommended Trip</h2>
 
-                <p><strong>Departure:</strong> ${next[0]}</p>
+                <p><strong>Bus Departure:</strong> ${next[0]}</p>
                 <p><strong>Bus:</strong> ${next[1]}</p>
                 <p><strong>Stop:</strong> ${next[2]}</p>
+                <p><strong>Next REM:</strong> ${nextREM(next[0])}</p>
                 <p><strong>Leaves In:</strong> ${wait} minute(s)</p>
             </div>
 
@@ -76,11 +102,13 @@ function updateBusDisplay() {
         `;
 
         upcoming.forEach(bus => {
+
             html += `
                 <p>
                     <strong>${bus[0]}</strong> |
                     Bus ${bus[1]} |
-                    ${bus[2]}
+                    ${bus[2]} |
+                    REM ${nextREM(bus[0])}
                 </p>
             `;
         });
@@ -98,11 +126,13 @@ function updateBusDisplay() {
         `;
 
         buses.forEach(bus => {
+
             html += `
                 <p>
                     <strong>${bus[0]}</strong> |
                     Bus ${bus[1]} |
-                    ${bus[2]}
+                    ${bus[2]} |
+                    REM ${nextREM(bus[0])}
                 </p>
             `;
         });
