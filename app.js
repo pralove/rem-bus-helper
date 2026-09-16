@@ -29,6 +29,7 @@ const trips = [
 
 ["11:15","491","Gare Vaudreuil","11:34"],
 ["11:19","491","Plaza Vaudreuil","11:34"]
+
 ];
 
 const remDepartures = [
@@ -88,7 +89,7 @@ function mcGillArrival(remDeparture) {
     return `${String(newH).padStart(2, "0")}:${String(newM).padStart(2, "0")}`;
 }
 
-function nextServiceDay() {
+function nextServiceDate() {
 
     const d = new Date();
 
@@ -101,6 +102,18 @@ function nextServiceDay() {
     } else {
         d.setDate(d.getDate() + 1);
     }
+
+    return d.toLocaleDateString("en-CA", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
+}
+
+function todayServiceDate() {
+
+    const d = new Date();
 
     return d.toLocaleDateString("en-CA", {
         weekday: "long",
@@ -123,12 +136,14 @@ function updateBusDisplay() {
     let html = `
         <h3>Current Time</h3>
         <p>${now.toLocaleTimeString()}</p>
-
-        <h3>📅 Schedule For</h3>
-        <p>${nextServiceDay()}</p>
     `;
 
     if (upcoming.length > 0) {
+
+        html += `
+            <h3>📅 Today's Service</h3>
+            <p>${todayServiceDate()}</p>
+        `;
 
         const next = upcoming[0];
 
@@ -148,7 +163,7 @@ function updateBusDisplay() {
         ">
             <h2>✅ Recommended Trip</h2>
 
-            <p style="color:${color};font-weight:bold;">
+            <p style="color:${color};font-weight:bold;font-size:20px;">
                 Bus ${next[1]}
             </p>
 
@@ -172,7 +187,12 @@ function updateBusDisplay() {
 
             html += `
             <div style="margin-bottom:12px;">
-                <p style="color:${color};font-weight:bold;margin-bottom:3px;">
+
+                <p style="
+                    color:${color};
+                    font-weight:bold;
+                    margin-bottom:3px;
+                ">
                     ${trip[0]} |
                     Bus ${trip[1]} |
                     ${trip[2]}
@@ -180,14 +200,19 @@ function updateBusDisplay() {
 
                 <p style="margin-left:15px;">
                     Arrive REM ${trip[3]} |
-                    Catch REM ${nextREM(trip[3])} |
-                    Arrive McGill ${mcGillArrival(nextREM(trip[3]))}
+                    Catch REM ${nextREM(trip[3])}
                 </p>
+
             </div>
             `;
         });
 
     } else {
+
+        html += `
+            <h3>📅 Next Service Day</h3>
+            <p>${nextServiceDate()}</p>
+        `;
 
         html += `
         <div style="
@@ -207,7 +232,12 @@ function updateBusDisplay() {
 
             html += `
             <div style="margin-bottom:12px;">
-                <p style="color:${color};font-weight:bold;margin-bottom:3px;">
+
+                <p style="
+                    color:${color};
+                    font-weight:bold;
+                    margin-bottom:3px;
+                ">
                     ${trip[0]} |
                     Bus ${trip[1]} |
                     ${trip[2]}
@@ -215,9 +245,9 @@ function updateBusDisplay() {
 
                 <p style="margin-left:15px;">
                     Arrive REM ${trip[3]} |
-                    Catch REM ${nextREM(trip[3])} |
-                    Arrive McGill ${mcGillArrival(nextREM(trip[3]))}
+                    Catch REM ${nextREM(trip[3])}
                 </p>
+
             </div>
             `;
         });
