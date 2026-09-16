@@ -72,6 +72,44 @@ function waitTime(arrivalTime) {
     return (rh * 60 + rm) - (ah * 60 + am);
 }
 
+function mcGillArrival(remDeparture) {
+
+    if (remDeparture === "No REM") {
+        return "-";
+    }
+
+    const [h, m] = remDeparture.split(":").map(Number);
+
+    let total = h * 60 + m + 35;
+
+    const newH = Math.floor(total / 60);
+    const newM = total % 60;
+
+    return `${String(newH).padStart(2, "0")}:${String(newM).padStart(2, "0")}`;
+}
+
+function nextServiceDay() {
+
+    const d = new Date();
+
+    if (d.getDay() === 5) {
+        d.setDate(d.getDate() + 3);
+    } else if (d.getDay() === 6) {
+        d.setDate(d.getDate() + 2);
+    } else if (d.getDay() === 0) {
+        d.setDate(d.getDate() + 1);
+    } else {
+        d.setDate(d.getDate() + 1);
+    }
+
+    return d.toLocaleDateString("en-CA", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
+}
+
 function updateBusDisplay() {
 
     const now = new Date();
@@ -85,6 +123,9 @@ function updateBusDisplay() {
     let html = `
         <h3>Current Time</h3>
         <p>${now.toLocaleTimeString()}</p>
+
+        <h3>📅 Schedule For</h3>
+        <p>${nextServiceDay()}</p>
     `;
 
     if (upcoming.length > 0) {
@@ -93,6 +134,10 @@ function updateBusDisplay() {
 
         const [h, m] = next[0].split(":").map(Number);
         const waitBus = (h * 60 + m) - currentMinutes;
+
+        const color = next[1] === "490"
+            ? "#0066cc"
+            : "#00aa44";
 
         html += `
         <div style="
@@ -103,11 +148,15 @@ function updateBusDisplay() {
         ">
             <h2>✅ Recommended Trip</h2>
 
-            <p><strong>Bus:</strong> ${next[1]}</p>
+            <p style="color:${color};font-weight:bold;">
+                Bus ${next[1]}
+            </p>
+
             <p><strong>Stop:</strong> ${next[2]}</p>
             <p><strong>Bus Departure:</strong> ${next[0]}</p>
             <p><strong>Arrive REM:</strong> ${next[3]}</p>
             <p><strong>Catch REM:</strong> ${nextREM(next[3])}</p>
+            <p><strong>Arrive McGill:</strong> ${mcGillArrival(nextREM(next[3]))}</p>
             <p><strong>Wait at REM:</strong> ${waitTime(next[3])} min</p>
             <p><strong>Leaves In:</strong> ${waitBus} min</p>
         </div>
@@ -117,14 +166,24 @@ function updateBusDisplay() {
 
         upcoming.forEach(trip => {
 
+            const color = trip[1] === "490"
+                ? "#0066cc"
+                : "#00aa44";
+
             html += `
-            <p>
-                <strong>${trip[0]}</strong> |
-                Bus ${trip[1]} |
-                ${trip[2]} |
-                Arrive REM ${trip[3]} |
-                Catch REM ${nextREM(trip[3])}
-            </p>
+            <div style="margin-bottom:12px;">
+                <p style="color:${color};font-weight:bold;margin-bottom:3px;">
+                    ${trip[0]} |
+                    Bus ${trip[1]} |
+                    ${trip[2]}
+                </p>
+
+                <p style="margin-left:15px;">
+                    Arrive REM ${trip[3]} |
+                    Catch REM ${nextREM(trip[3])} |
+                    Arrive McGill ${mcGillArrival(nextREM(trip[3]))}
+                </p>
+            </div>
             `;
         });
 
@@ -137,18 +196,29 @@ function updateBusDisplay() {
             border-radius:10px;
             margin-top:10px;
         ">
-            <h2>🌙 Tomorrow (8 AM Start)</h2>
+            <h2>🌙 Next Service Day</h2>
         `;
+
         trips.forEach(trip => {
 
+            const color = trip[1] === "490"
+                ? "#0066cc"
+                : "#00aa44";
+
             html += `
-            <p>
-                <strong>${trip[0]}</strong> |
-                Bus ${trip[1]} |
-                ${trip[2]} |
-                Arrive REM ${trip[3]} |
-                Catch REM ${nextREM(trip[3])}
-            </p>
+            <div style="margin-bottom:12px;">
+                <p style="color:${color};font-weight:bold;margin-bottom:3px;">
+                    ${trip[0]} |
+                    Bus ${trip[1]} |
+                    ${trip[2]}
+                </p>
+
+                <p style="margin-left:15px;">
+                    Arrive REM ${trip[3]} |
+                    Catch REM ${nextREM(trip[3])} |
+                    Arrive McGill ${mcGillArrival(nextREM(trip[3]))}
+                </p>
+            </div>
             `;
         });
 
@@ -163,4 +233,3 @@ updateBusDisplay();
 setInterval(() => {
     updateBusDisplay();
 }, 30000);
-        
