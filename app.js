@@ -81,12 +81,12 @@ function mcGillArrival(remDeparture) {
 
     const [h, m] = remDeparture.split(":").map(Number);
 
-    let total = h * 60 + m + 35;
+    const total = h * 60 + m + 35;
 
-    const newH = Math.floor(total / 60);
-    const newM = total % 60;
+    const hh = Math.floor(total / 60);
+    const mm = total % 60;
 
-    return `${String(newH).padStart(2, "0")}:${String(newM).padStart(2, "0")}`;
+    return `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}`;
 }
 
 function nextServiceDate() {
@@ -113,9 +113,7 @@ function nextServiceDate() {
 
 function todayServiceDate() {
 
-    const d = new Date();
-
-    return d.toLocaleDateString("en-CA", {
+    return new Date().toLocaleDateString("en-CA", {
         weekday: "long",
         year: "numeric",
         month: "long",
@@ -186,24 +184,16 @@ function updateBusDisplay() {
                 : "#00aa44";
 
             html += `
-            <div style="margin-bottom:12px;">
-
-                <p style="
-                    color:${color};
-                    font-weight:bold;
-                    margin-bottom:3px;
-                ">
-                    ${trip[0]} |
-                    Bus ${trip[1]} |
-                    ${trip[2]}
-                </p>
-
-                <p style="margin-left:15px;">
-                    Arrive REM ${trip[3]} |
-                    Catch REM ${nextREM(trip[3])}
-                </p>
-
-            </div>
+            <p style="
+                color:${color};
+                font-weight:bold;
+            ">
+                ${trip[0]} |
+                Bus ${trip[1]} |
+                ${trip[2]} |
+                Arrive REM ${trip[3]} |
+                Catch REM ${nextREM(trip[3])}
+            </p>
             `;
         });
 
@@ -231,24 +221,16 @@ function updateBusDisplay() {
                 : "#00aa44";
 
             html += `
-            <div style="margin-bottom:12px;">
-
-                <p style="
-                    color:${color};
-                    font-weight:bold;
-                    margin-bottom:3px;
-                ">
-                    ${trip[0]} |
-                    Bus ${trip[1]} |
-                    ${trip[2]}
-                </p>
-
-                <p style="margin-left:15px;">
-                    Arrive REM ${trip[3]} |
-                    Catch REM ${nextREM(trip[3])}
-                </p>
-
-            </div>
+            <p style="
+                color:${color};
+                font-weight:bold;
+            ">
+                ${trip[0]} |
+                Bus ${trip[1]} |
+                ${trip[2]} |
+                Arrive REM ${trip[3]} |
+                Catch REM ${nextREM(trip[3])}
+            </p>
             `;
         });
 
