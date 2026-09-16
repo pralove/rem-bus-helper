@@ -139,9 +139,28 @@ function updateBusDisplay() {
         ">
             <h2>🌙 Tomorrow (8 AM Start)</h2>
         `;
-
         trips.forEach(trip => {
 
             html += `
             <p>
-                <strong>${trip
+                <strong>${trip[0]}</strong> |
+                Bus ${trip[1]} |
+                ${trip[2]} |
+                Arrive REM ${trip[3]} |
+                Catch REM ${nextREM(trip[3])}
+            </p>
+            `;
+        });
+
+        html += `</div>`;
+    }
+
+    result.innerHTML = html;
+}
+
+updateBusDisplay();
+
+setInterval(() => {
+    updateBusDisplay();
+}, 30000);
+        
