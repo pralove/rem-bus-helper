@@ -41,6 +41,9 @@ const remDepartures = [
 
 const result = document.getElementById("result");
 
+let weatherText = "<h3>🌤 Weather</h3><p>Loading weather...</p>";
+
+
 function nextREM(arrivalTime) {
 
     const [ah, am] = arrivalTime.split(":").map(Number);
@@ -121,6 +124,49 @@ function todayServiceDate() {
     });
 }
 
+async function loadWeather() {
+
+    try {
+
+        const response = await fetch(
+            "https://api.open-meteo.com/v1/forecast?latitude=45.40&longitude=-74.04&daily=temperature_2m_max,temperature_2m_min&timezone=America%2FToronto"
+        );
+
+        const data = await response.json();
+
+        const todayHigh = Math.round(data.daily.temperature_2m_max[0]);
+        const todayLow = Math.round(data.daily.temperature_2m_min[0]);
+
+        const tomorrowHigh = Math.round(data.daily.temperature_2m_max[1]);
+        const tomorrowLow = Math.round(data.daily.temperature_2m_min[1]);
+
+        weatherText = `
+            <h3>🌤 Weather</h3>
+
+            <p>
+                <strong>Today:</strong>
+                High ${todayHigh}°C | Low ${todayLow}°C
+            </p>
+
+            <p>
+                <strong>Tomorrow:</strong>
+                High ${tomorrowHigh}°C | Low ${tomorrowLow}°C
+            </p>
+        `;
+
+        updateBusDisplay();
+
+    } catch (error) {
+
+        weatherText = `
+            <h3>🌤 Weather</h3>
+            <p>Unable to load weather.</p>
+        `;
+
+        updateBusDisplay();
+    }
+}
+
 function updateBusDisplay() {
 
     const now = new Date();
@@ -132,6 +178,8 @@ function updateBusDisplay() {
     });
 
     let html = `
+        ${weatherText}
+
         <h3>Current Time</h3>
         <p>${now.toLocaleTimeString()}</p>
     `;
@@ -240,6 +288,7 @@ function updateBusDisplay() {
     result.innerHTML = html;
 }
 
+loadWeather();
 updateBusDisplay();
 
 setInterval(() => {
