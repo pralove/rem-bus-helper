@@ -129,7 +129,7 @@ async function loadWeather() {
     try {
 
         const response = await fetch(
-            "https://api.open-meteo.com/v1/forecast?latitude=45.40&longitude=-74.04&daily=temperature_2m_max,temperature_2m_min&timezone=America%2FToronto"
+            "https://api.open-meteo.com/v1/forecast?latitude=45.40&longitude=-74.04&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=America%2FToronto"
         );
 
         const data = await response.json();
@@ -139,6 +139,23 @@ async function loadWeather() {
 
         const tomorrowHigh = Math.round(data.daily.temperature_2m_max[1]);
         const tomorrowLow = Math.round(data.daily.temperature_2m_min[1]);
+        function weatherDescription(code) {
+
+    if (code === 0) return "☀️ Sunny";
+    if (code <= 3) return "⛅ Partly Cloudy";
+    if (code <= 48) return "☁️ Cloudy";
+    if (code <= 67) return "🌧 Rain";
+    if (code <= 77) return "🌨 Snow";
+    if (code <= 99) return "⛈ Storm";
+
+    return "Unknown";
+}
+
+const todayWeather =
+    weatherDescription(data.daily.weathercode[0]);
+
+const tomorrowWeather =
+    weatherDescription(data.daily.weathercode[1]);
 
         weatherText = `
             <h3>🌤 Weather</h3>
@@ -159,9 +176,18 @@ async function loadWeather() {
     } catch (error) {
 
         weatherText = `
-            <h3>🌤 Weather</h3>
-            <p>Unable to load weather.</p>
-        `;
+    <h3>🌤 Weather</h3>
+
+    <p>
+        <strong>Today</strong> ${todayWeather}<br>
+        High ${todayHigh}°C | Low ${todayLow}°C
+    </p>
+
+    <p>
+        <strong>Tomorrow</strong> ${tomorrowWeather}<br>
+        High ${tomorrowHigh}°C | Low ${tomorrowLow}°C
+    </p>
+`;
 
         updateBusDisplay();
     }
