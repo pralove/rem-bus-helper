@@ -306,6 +306,7 @@ function updateBusDisplay() {
     result.innerHTML = html;
 }
 
+loadWeather();
 updateBusDisplay();
 
 setInterval(() => {
