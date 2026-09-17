@@ -172,11 +172,18 @@ const tomorrowWeather =
 `;
 
         updateBusDisplay();
+        
 
-    } catch (error) {
+   } catch (error) {
 
+    weatherText = `
+        <h3>🌤 Weather</h3>
+        <p>Unable to load weather.</p>
+    `;
+
+    updateBusDisplay();
 }
-
+}
 function updateBusDisplay() {
 
     const now = new Date();
