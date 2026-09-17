@@ -219,10 +219,6 @@ function findClosestStop() {
     );
 }
 
-        function() {
-            closestStopText = "Location permission denied";
-            updateBusDisplay();
-        }
 
     );
 }
