@@ -157,25 +157,7 @@ const todayWeather =
 const tomorrowWeather =
     weatherDescription(data.daily.weathercode[1]);
 
-        weatherText = `
-            <h3>🌤 Weather</h3>
-
-            <p>
-                <strong>Today:</strong>
-                High ${todayHigh}°C | Low ${todayLow}°C
-            </p>
-
-            <p>
-                <strong>Tomorrow:</strong>
-                High ${tomorrowHigh}°C | Low ${tomorrowLow}°C
-            </p>
-        `;
-
-        updateBusDisplay();
-
-    } catch (error) {
-
-        weatherText = `
+    weatherText = `
     <h3>🌤 Weather</h3>
 
     <p>
@@ -190,7 +172,9 @@ const tomorrowWeather =
 `;
 
         updateBusDisplay();
-    }
+
+    } catch (error) {
+
 }
 
 function updateBusDisplay() {
