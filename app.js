@@ -41,7 +41,7 @@ const remDepartures = [
 
 const result = document.getElementById("result");
 
-let closestStopText = "Finding location...";
+let closestStopText = "Finding nearest stop...";
 
 function nextREM(arrivalTime) {
 
@@ -125,7 +125,50 @@ function todayServiceDate() {
 
 function findClosestStop() {
 
+    const stops = [
+{
+    name: "Gare Vaudreuil",
+    lat: 45.399530,
+    lon: -74.050311
+},
+{
+    name: "Bourget / St. Charles",
+    lat: 45.403441,
+    lon: -74.032237
+},
+{
+    name: "Plaza Vaudreuil",
+    lat: 45.406870,
+    lon: -74.036366
+}
+];
+
+function distanceKm(lat1, lon1, lat2, lon2) {
+
+    const R = 6371;
+
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) *
+        Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(
+        Math.sqrt(a),
+        Math.sqrt(1 - a)
+    );
+
+    return R * c;
+}
+
+function findClosestStop() {
+
     if (!navigator.geolocation) {
+
         closestStopText = "GPS not supported";
         updateBusDisplay();
         return;
@@ -135,15 +178,46 @@ function findClosestStop() {
 
         function(position) {
 
+            const userLat = position.coords.latitude;
+            const userLon = position.coords.longitude;
+
+            let bestStop = null;
+            let shortest = 999999;
+
+            stops.forEach(stop => {
+
+                const dist = distanceKm(
+                    userLat,
+                    userLon,
+                    stop.lat,
+                    stop.lon
+                );
+
+                if (dist < shortest) {
+                    shortest = dist;
+                    bestStop = stop;
+                }
+            });
+
             closestStopText =
-                "GPS working (" +
-                position.coords.latitude.toFixed(5) +
-                ", " +
-                position.coords.longitude.toFixed(5) +
-                ")";
+                bestStop.name +
+                "<br>" +
+                shortest.toFixed(1) +
+                " km away";
 
             updateBusDisplay();
         },
+
+        function() {
+
+            closestStopText =
+                "Location permission denied";
+
+            updateBusDisplay();
+        }
+
+    );
+}
 
         function() {
             closestStopText = "Location permission denied";
