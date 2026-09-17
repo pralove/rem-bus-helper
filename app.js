@@ -41,6 +41,8 @@ const remDepartures = [
 
 const result = document.getElementById("result");
 
+let closestStopText = "Finding location...";
+
 function nextREM(arrivalTime) {
 
     const [ah, am] = arrivalTime.split(":").map(Number);
@@ -121,6 +123,36 @@ function todayServiceDate() {
     });
 }
 
+function findClosestStop() {
+
+    if (!navigator.geolocation) {
+        closestStopText = "GPS not supported";
+        updateBusDisplay();
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            closestStopText =
+                "GPS working (" +
+                position.coords.latitude.toFixed(5) +
+                ", " +
+                position.coords.longitude.toFixed(5) +
+                ")";
+
+            updateBusDisplay();
+        },
+
+        function() {
+            closestStopText = "Location permission denied";
+            updateBusDisplay();
+        }
+
+    );
+}
+
 function updateBusDisplay() {
 
     const now = new Date();
@@ -132,7 +164,10 @@ function updateBusDisplay() {
     });
 
     let html = `
-        <h3>Current Time</h3>
+    <h3>📍 Closest Stop</h3>
+    <p>${closestStopText}</p>
+
+    <h3>Current Time</h3>
         <p>${now.toLocaleTimeString()}</p>
     `;
 
@@ -240,6 +275,7 @@ function updateBusDisplay() {
     result.innerHTML = html;
 }
 
+findClosestStop();
 updateBusDisplay();
 
 setInterval(() => {
