@@ -58,7 +58,7 @@ const result = document.getElementById("result");
 let weatherText = "<h3>🌤 Weather</h3><p>Loading weather...</p>";
 let userLatitude = null;
 let userLongitude = null;
-let nearestStop = "TEST GPS";
+let nearestStop = null;
 
 
 function nextREM(arrivalTime) {
@@ -297,7 +297,7 @@ function findClosestStop() {
             closest = name;
         }
     });
-
+alert("Closest stop: " + closest);
     nearestStop = closest;
 }
 
@@ -582,6 +582,8 @@ function periodsForDate(periods, date) {
 if (navigator.geolocation) {
 
     navigator.geolocation.getCurrentPosition(position => {
+
+        alert("GPS Success");
 
         userLatitude = position.coords.latitude;
         userLongitude = position.coords.longitude;
