@@ -207,11 +207,7 @@ const todayWind =
 const tomorrowWind =
     periodsForDate(windPeriods, tomorrowDateString);
 
-const todaySnowstorm =
-    periodsForDate(snowstormPeriods, todayDate);
 
-const tomorrowSnowstorm =
-    periodsForDate(snowstormPeriods, tomorrowDateString);
 
 
         const snowstormPeriods = [];
@@ -227,6 +223,12 @@ const tomorrowSnowstorm =
         );
     }
 });
+
+const todaySnowstorm =
+    periodsForDate(snowstormPeriods, todayDate);
+
+const tomorrowSnowstorm =
+    periodsForDate(snowstormPeriods, tomorrowDateString);
 
 
 weatherText = `
