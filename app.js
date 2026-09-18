@@ -1,3 +1,17 @@
+const stopLocations = {
+    "Gare Vaudreuil": {
+        lat: 45.399491,
+        lon: -74.050285
+    },
+    "Plaza Vaudreuil": {
+        lat: 45.407207,
+        lon: -74.036385
+    },
+    "St. Charles": {
+        lat: 45.404542,
+        lon: -74.030554
+    }
+};
 const trips = [
 
 ["08:00","490","Gare Vaudreuil","08:21"],
@@ -42,6 +56,10 @@ const remDepartures = [
 const result = document.getElementById("result");
 
 let weatherText = "<h3>🌤 Weather</h3><p>Loading weather...</p>";
+let userLatitude = null;
+let userLongitude = null;
+let nearestStop = null;
+
 
 function nextREM(arrivalTime) {
 
@@ -257,6 +275,32 @@ ${tomorrowWind.map(p => `<p>💨 Strong Wind: ${p}</p>`).join("")}
 ${tomorrowSnowstorm.map(p => `<p>🌨 Snowstorm: ${p}</p>`).join("")}
 `;
 
+function findClosestStop() {
+
+    if (userLatitude === null || userLongitude === null) {
+        return;
+    }
+
+    let closest = null;
+    let closestDistance = Number.MAX_VALUE;
+
+    Object.entries(stopLocations).forEach(([name, stop]) => {
+
+        const distance =
+            Math.sqrt(
+                Math.pow(userLatitude - stop.lat, 2) +
+                Math.pow(userLongitude - stop.lon, 2)
+            );
+
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closest = name;
+        }
+    });
+
+    nearestStop = closest;
+}
+
         updateBusDisplay();
 
     } catch (error) {
@@ -290,6 +334,9 @@ function updateBusDisplay() {
 
         <h3>Current Time</h3>
         <p>${now.toLocaleTimeString()}</p>
+        ${nearestStop ? `
+<p><strong>📍 Nearest Stop:</strong> ${nearestStop}</p>
+` : ""}
     `;
 
     if (upcoming.length > 0) {
@@ -311,12 +358,13 @@ departureTime.setMinutes(m);
 departureTime.setSeconds(0);
 
 const diffMs = departureTime - now;
+const safeDiffMs = Math.max(0, diffMs);
 
 const countdownMinutes =
-    Math.floor(diffMs / 60000);
+    Math.floor(safeDiffMs / 60000);
 
 const countdownSeconds =
-    Math.floor((diffMs % 60000) / 1000);  
+    Math.floor((safeDiffMs % 60000) / 1000)
 
         const color = next[1] === "490"
             ? "#0066cc"
@@ -342,10 +390,12 @@ const countdownSeconds =
             <p><strong>Arrive McGill:</strong> ${mcGillArrival(nextREM(next[3]))}</p>
             <p><strong>Wait at REM:</strong> ${waitTime(next[3])} min</p>
 
+${safeDiffMs > 0 ? `
 <p>
     <strong>⏳ Bus leaves in:</strong>
     ${countdownMinutes}:${String(countdownSeconds).padStart(2, "0")}
 </p>
+` : ""}
         </div>
 
         <h3>All Remaining Trips Today</h3>
@@ -527,6 +577,20 @@ function periodsForDate(periods, date) {
     return periods
         .filter(p => p.date === date)
         .map(p => p.text);
+}
+
+if (navigator.geolocation) {
+
+    navigator.geolocation.getCurrentPosition(position => {
+
+        userLatitude = position.coords.latitude;
+        userLongitude = position.coords.longitude;
+
+        findClosestStop();
+
+        updateBusDisplay();
+
+    });
 }
 
 loadWeather();
