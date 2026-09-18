@@ -183,6 +183,31 @@ const tomorrowDateString =
         const windPeriods =
             findWindPeriods(times, hourlyWind);
 
+const todayRain =
+    periodsForDate(rainPeriods, todayDate);
+
+const tomorrowRain =
+    periodsForDate(rainPeriods, tomorrowDateString);
+
+const todaySnow =
+    periodsForDate(snowPeriods, todayDate);
+
+const tomorrowSnow =
+    periodsForDate(snowPeriods, tomorrowDateString);
+
+const todayStorm =
+    periodsForDate(stormPeriods, todayDate);
+
+const tomorrowStorm =
+    periodsForDate(stormPeriods, tomorrowDateString);
+
+const todayWind =
+    periodsForDate(windPeriods, todayDate);
+
+const tomorrowWind =
+    periodsForDate(windPeriods, tomorrowDateString);
+
+
         const snowstormPeriods = [];
 
             hourlyCodes.forEach((code, i) => {
@@ -206,22 +231,20 @@ weatherText = `
         High ${todayHigh}°C | Low ${todayLow}°C
     </p>
 
-    ${rainPeriods.map(p => `<p>☔ Rain: ${p}</p>`).join("")}
-
-    ${snowPeriods.map(p => `<p>❄️ Snow: ${p}</p>`).join("")}
-
-    ${stormPeriods.map(p => `<p>⛈ Storm: ${p}</p>`).join("")}
-
-    ${snowstormPeriods.map(p => `<p>🌨 Snowstorm: ${p}</p>`).join("")}
-
-    ${windPeriods.map(p => `<p>💨 Strong Wind: ${p}</p>`).join("")}
-    
-
+    ${todayRain.map(p => `<p>☔ Rain: ${p}</p>`).join("")}
+${todaySnow.map(p => `<p>❄️ Snow: ${p}</p>`).join("")}
+${todayStorm.map(p => `<p>⛈ Storm: ${p}</p>`).join("")}
+${todayWind.map(p => `<p>💨 Strong Wind: ${p}</p>`).join("")}
 
     <p>
         <strong>Tomorrow</strong> ${tomorrowWeather}<br>
         High ${tomorrowHigh}°C | Low ${tomorrowLow}°C
     </p>
+
+    ${tomorrowRain.map(p => `<p>☔ Rain: ${p}</p>`).join("")}
+${tomorrowSnow.map(p => `<p>❄️ Snow: ${p}</p>`).join("")}
+${tomorrowStorm.map(p => `<p>⛈ Storm: ${p}</p>`).join("")}
+${tomorrowWind.map(p => `<p>💨 Strong Wind: ${p}</p>`).join("")}
 `;
 
         updateBusDisplay();
@@ -398,10 +421,22 @@ function findWeatherPeriods(times, codes, type) {
 const endTime =
     new Date(times[end]).toLocaleTimeString([], {hour:'numeric'});
 
+const date =
+    times[start].split("T")[0];
+
 if (start === end) {
-    periods.push(startTime);
+
+    periods.push({
+        date: date,
+        text: startTime
+    });
+
 } else {
-    periods.push(`${startTime} - ${endTime}`);
+
+    periods.push({
+        date: date,
+        text: `${startTime} - ${endTime}`
+    });
 }
 
             start = null;
@@ -429,15 +464,41 @@ function findWindPeriods(times, winds) {
 
             const end = windy ? i : i - 1;
 
-            periods.push(
-                `${new Date(times[start]).toLocaleTimeString([], {hour:'numeric'})} - ${new Date(times[end]).toLocaleTimeString([], {hour:'numeric'})}`
-            );
+            const date =
+    times[start].split("T")[0];
 
+const startTime =
+    new Date(times[start]).toLocaleTimeString([], {hour:'numeric'});
+
+const endTime =
+    new Date(times[end]).toLocaleTimeString([], {hour:'numeric'});
+
+if (start === end) {
+
+    periods.push({
+        date: date,
+        text: startTime
+    });
+
+} else {
+
+    periods.push({
+        date: date,
+        text: `${startTime} - ${endTime}`
+    });
+}
             start = null;
         }
     }
 
     return periods;
+}
+
+function periodsForDate(periods, date) {
+
+    return periods
+        .filter(p => p.date === date)
+        .map(p => p.text);
 }
 
 loadWeather();
