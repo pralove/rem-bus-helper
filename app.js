@@ -304,6 +304,20 @@ function updateBusDisplay() {
         const [h, m] = next[0].split(":").map(Number);
         const waitBus = (h * 60 + m) - currentMinutes;
 
+      const departureTime = new Date();
+
+departureTime.setHours(h);
+departureTime.setMinutes(m);
+departureTime.setSeconds(0);
+
+const diffMs = departureTime - now;
+
+const countdownMinutes =
+    Math.floor(diffMs / 60000);
+
+const countdownSeconds =
+    Math.floor((diffMs % 60000) / 1000);  
+
         const color = next[1] === "490"
             ? "#0066cc"
             : "#00aa44";
@@ -328,6 +342,11 @@ function updateBusDisplay() {
             <p><strong>Arrive McGill:</strong> ${mcGillArrival(nextREM(next[3]))}</p>
             <p><strong>Wait at REM:</strong> ${waitTime(next[3])} min</p>
             <p><strong>Leaves In:</strong> ${waitBus} min</p>
+
+<p>
+    <strong>⏳ Countdown:</strong>
+    ${countdownMinutes}:${String(countdownSeconds).padStart(2, "0")}
+</p>
         </div>
 
         <h3>All Remaining Trips Today</h3>
@@ -516,4 +535,4 @@ updateBusDisplay();
 
 setInterval(() => {
     updateBusDisplay();
-}, 30000);
+}, 1000);
