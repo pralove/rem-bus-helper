@@ -289,7 +289,10 @@ alert("Lon: " + userLongitude);
     let closest = null;
     let closestDistance = Number.MAX_VALUE;
 
+    alert("About to loop stops");
     Object.entries(stopLocations).forEach(([name, stop]) => {
+        alert("Loop running");
+        
         alert(name);
 
         const distance =
