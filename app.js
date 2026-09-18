@@ -1,31 +1,31 @@
 const trips = [
 
 ["08:00","490","Gare Vaudreuil","08:21"],
-["08:07","490","Bourget / St. Charles","08:21"],
+["08:07","490","St. Charles","08:21"],
 
 ["08:10","491","Gare Vaudreuil","08:29"],
 ["08:14","491","Plaza Vaudreuil","08:29"],
 
 ["08:27","490","Gare Vaudreuil","08:48"],
-["08:34","490","Bourget / St. Charles","08:48"],
+["08:34","490","St. Charles","08:48"],
 
 ["08:41","491","Gare Vaudreuil","09:00"],
 ["08:45","491","Plaza Vaudreuil","09:00"],
 
 ["09:00","490","Gare Vaudreuil","09:21"],
-["09:07","490","Bourget / St. Charles","09:21"],
+["09:07","490","St. Charles","09:21"],
 
 ["09:15","491","Gare Vaudreuil","09:34"],
 ["09:19","491","Plaza Vaudreuil","09:34"],
 
 ["09:35","490","Gare Vaudreuil","09:56"],
-["09:42","490","Bourget / St. Charles","09:56"],
+["09:42","490","St. Charles","09:56"],
 
 ["10:06","491","Gare Vaudreuil","10:25"],
 ["10:10","491","Plaza Vaudreuil","10:25"],
 
 ["10:45","490","Gare Vaudreuil","11:06"],
-["10:52","490","Bourget / St. Charles","11:06"],
+["10:52","490","St. Charles","11:06"],
 
 ["11:15","491","Gare Vaudreuil","11:34"],
 ["11:19","491","Plaza Vaudreuil","11:34"]
@@ -134,6 +134,15 @@ async function loadWeather() {
         const data = await response.json();
 
         const times = data.hourly.time;
+
+        const todayDate = times[0].split("T")[0];
+
+const tomorrowDate = new Date(times[0]);
+tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+
+const tomorrowDateString =
+    tomorrowDate.toISOString().split("T")[0];
+
         const hourlyCodes = data.hourly.weather_code;
         const hourlyWind = data.hourly.wind_speed_10m;
 
