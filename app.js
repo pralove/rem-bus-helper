@@ -588,6 +588,8 @@ if (navigator.geolocation) {
 
         findClosestStop();
 
+        console.log("Nearest stop:", nearestStop);
+
         updateBusDisplay();
 
     });
