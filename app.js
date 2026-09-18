@@ -595,11 +595,13 @@ if (navigator.geolocation) {
         userLatitude = position.coords.latitude;
         userLongitude = position.coords.longitude;
 
-        findClosestStop();
+        alert("Before findClosestStop");
 
-        console.log("Nearest stop:", nearestStop);
+findClosestStop();
 
-        updateBusDisplay();
+alert("After findClosestStop");
+
+updateBusDisplay();
 
     });
 }
