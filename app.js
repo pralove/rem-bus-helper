@@ -281,6 +281,9 @@ function findClosestStop() {
         return;
     }
 
+    alert("Lat: " + userLatitude);
+alert("Lon: " + userLongitude);
+
     let closest = null;
     let closestDistance = Number.MAX_VALUE;
 
@@ -298,6 +301,7 @@ function findClosestStop() {
         }
     });
 alert("Closest stop: " + closest);
+alert("Found: " + closest);
     nearestStop = closest;
 }
 
