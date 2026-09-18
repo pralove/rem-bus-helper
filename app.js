@@ -58,7 +58,7 @@ const result = document.getElementById("result");
 let weatherText = "<h3>🌤 Weather</h3><p>Loading weather...</p>";
 let userLatitude = null;
 let userLongitude = null;
-let nearestStop = null;
+let nearestStop = "TEST GPS";
 
 
 function nextREM(arrivalTime) {
