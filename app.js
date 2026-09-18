@@ -277,6 +277,8 @@ ${tomorrowSnowstorm.map(p => `<p>🌨 Snowstorm: ${p}</p>`).join("")}
 
 function findClosestStop() {
 
+    alert("findClosestStop started");
+
     if (userLatitude === null || userLongitude === null) {
         return;
     }
@@ -288,6 +290,7 @@ alert("Lon: " + userLongitude);
     let closestDistance = Number.MAX_VALUE;
 
     Object.entries(stopLocations).forEach(([name, stop]) => {
+        alert(name);
 
         const distance =
             Math.sqrt(
