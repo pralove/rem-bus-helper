@@ -207,6 +207,12 @@ const todayWind =
 const tomorrowWind =
     periodsForDate(windPeriods, tomorrowDateString);
 
+const todaySnowstorm =
+    periodsForDate(snowstormPeriods, todayDate);
+
+const tomorrowSnowstorm =
+    periodsForDate(snowstormPeriods, tomorrowDateString);
+
 
         const snowstormPeriods = [];
 
@@ -235,6 +241,7 @@ weatherText = `
 ${todaySnow.map(p => `<p>❄️ Snow: ${p}</p>`).join("")}
 ${todayStorm.map(p => `<p>⛈ Storm: ${p}</p>`).join("")}
 ${todayWind.map(p => `<p>💨 Strong Wind: ${p}</p>`).join("")}
+${todaySnowstorm.map(p => `<p>🌨 Snowstorm: ${p}</p>`).join("")}
 
     <p>
         <strong>Tomorrow</strong> ${tomorrowWeather}<br>
@@ -245,6 +252,7 @@ ${todayWind.map(p => `<p>💨 Strong Wind: ${p}</p>`).join("")}
 ${tomorrowSnow.map(p => `<p>❄️ Snow: ${p}</p>`).join("")}
 ${tomorrowStorm.map(p => `<p>⛈ Storm: ${p}</p>`).join("")}
 ${tomorrowWind.map(p => `<p>💨 Strong Wind: ${p}</p>`).join("")}
+${tomorrowSnowstorm.map(p => `<p>🌨 Snowstorm: ${p}</p>`).join("")}
 `;
 
         updateBusDisplay();
