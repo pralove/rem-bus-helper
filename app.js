@@ -1,24 +1,9 @@
-const stopLocations = {
-    "Gare Vaudreuil": {
-        lat: 45.399491,
-        lon: -74.050285
-    },
-    "Plaza Vaudreuil": {
-        lat: 45.407207,
-        lon: -74.036385
-    },
-    "St. Charles": {
-        lat: 45.404542,
-        lon: -74.030554
-    }
-};
+
 
 const result = document.getElementById("result");
 
 let weatherText = "<h3>🌤 Weather</h3><p>Loading weather...</p>";
-let userLatitude = null;
-let userLongitude = null;
-let nearestStop = null;
+
 
 
 function nextREM(arrivalTime) {
@@ -110,6 +95,9 @@ async function loadWeather() {
         );
 
         const data = await response.json();
+        if (!data.hourly) {
+    throw new Error("Weather data unavailable");
+}
 
         const times = data.hourly.time;
 
@@ -254,31 +242,7 @@ ${tomorrowSnowstorm.map(p => `<p>🌨 Snowstorm: ${p}</p>`).join("")}
     }
 }
 
-function findClosestStop() {
 
-    if (userLatitude === null || userLongitude === null) {
-        return;
-    }
-
-    let closest = null;
-    let closestDistance = Number.MAX_VALUE;
-
-    Object.entries(stopLocations).forEach(([name, stop]) => {
-
-        const distance =
-            Math.sqrt(
-                Math.pow(userLatitude - stop.lat, 2) +
-                Math.pow(userLongitude - stop.lon, 2)
-            );
-
-        if (distance < closestDistance) {
-            closestDistance = distance;
-            closest = name;
-        }
-    });
-
-    nearestStop = closest;
-}
 
 function updateBusDisplay() {
 
@@ -295,9 +259,10 @@ function updateBusDisplay() {
 
         <h3>Current Time</h3>
         <p>${now.toLocaleTimeString()}</p>
-        ${nearestStop ? `
-<p><strong>📍 Nearest Stop:</strong> ${nearestStop}</p>
-` : ""}
+        <p>
+    <strong>📍 Nearest Stop:</strong>
+    ${nearestStop || "Location unavailable"}
+</p>
     `;
 
     if (upcoming.length > 0) {
