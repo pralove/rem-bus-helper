@@ -275,41 +275,7 @@ ${tomorrowWind.map(p => `<p>💨 Strong Wind: ${p}</p>`).join("")}
 ${tomorrowSnowstorm.map(p => `<p>🌨 Snowstorm: ${p}</p>`).join("")}
 `;
 
-function findClosestStop() {
 
-    alert("findClosestStop started");
-
-    if (userLatitude === null || userLongitude === null) {
-        return;
-    }
-
-    alert("Lat: " + userLatitude);
-alert("Lon: " + userLongitude);
-
-    let closest = null;
-    let closestDistance = Number.MAX_VALUE;
-
-    alert("About to loop stops");
-    Object.entries(stopLocations).forEach(([name, stop]) => {
-        alert("Loop running");
-        
-        alert(name);
-
-        const distance =
-            Math.sqrt(
-                Math.pow(userLatitude - stop.lat, 2) +
-                Math.pow(userLongitude - stop.lon, 2)
-            );
-
-        if (distance < closestDistance) {
-            closestDistance = distance;
-            closest = name;
-        }
-    });
-alert("Closest stop: " + closest);
-alert("Found: " + closest);
-    nearestStop = closest;
-}
 
         updateBusDisplay();
 
@@ -328,6 +294,31 @@ alert("Found: " + closest);
     }
 }
 
+function findClosestStop() {
+
+    if (userLatitude === null || userLongitude === null) {
+        return;
+    }
+
+    let closest = null;
+    let closestDistance = Number.MAX_VALUE;
+
+    Object.entries(stopLocations).forEach(([name, stop]) => {
+
+        const distance =
+            Math.sqrt(
+                Math.pow(userLatitude - stop.lat, 2) +
+                Math.pow(userLongitude - stop.lon, 2)
+            );
+
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closest = name;
+        }
+    });
+
+    nearestStop = closest;
+}
 
 function updateBusDisplay() {
 
@@ -593,26 +584,11 @@ if (navigator.geolocation) {
 
     navigator.geolocation.getCurrentPosition(position => {
 
-        alert("GPS Success");
 
         userLatitude = position.coords.latitude;
-        userLongitude = position.coords.longitude;
+userLongitude = position.coords.longitude;
 
-        alert("Before findClosestStop");
-
-try {
-
-    findClosestStop();
-
-    alert("After findClosestStop");
-
-} catch (error) {
-
-    alert("GPS ERROR: " + error);
-
-}
-
-alert("After findClosestStop");
+findClosestStop();
 
 updateBusDisplay();
 
