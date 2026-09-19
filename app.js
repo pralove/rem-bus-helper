@@ -108,7 +108,15 @@ function updateBusDisplay() {
             <p>${todayServiceDate()}</p>
         `;
 
-        const next = upcoming[0];
+        const stopTrips =
+    nearestStop
+        ? upcoming.filter(trip => trip[2] === nearestStop)
+        : [];
+
+const next =
+    stopTrips.length > 0
+        ? stopTrips[0]
+        : upcoming[0];
 
         const [h, m] = next[0].split(":").map(Number);
         const waitBus = (h * 60 + m) - currentMinutes;
