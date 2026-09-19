@@ -600,7 +600,17 @@ if (navigator.geolocation) {
 
         alert("Before findClosestStop");
 
-findClosestStop();
+try {
+
+    findClosestStop();
+
+    alert("After findClosestStop");
+
+} catch (error) {
+
+    alert("GPS ERROR: " + error);
+
+}
 
 alert("After findClosestStop");
 
