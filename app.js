@@ -365,7 +365,7 @@ const countdownMinutes =
     Math.floor(safeDiffMs / 60000);
 
 const countdownSeconds =
-    Math.floor((safeDiffMs % 60000) / 1000)
+    Math.floor((safeDiffMs % 60000) / 1000);
 
         const color = next[1] === "490"
             ? "#0066cc"
