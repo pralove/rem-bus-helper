@@ -1,10 +1,4 @@
-
-
 const result = document.getElementById("result");
-
-
-
-
 
 function nextREM(arrivalTime) {
 
@@ -85,10 +79,6 @@ function todayServiceDate() {
         day: "numeric"
     });
 }
-
-
-
-
 
 function updateBusDisplay() {
 
@@ -235,7 +225,6 @@ ${safeDiffMs > 0 ? `
 
     result.innerHTML = html;
 }
-
 
 if (navigator.geolocation) {
 

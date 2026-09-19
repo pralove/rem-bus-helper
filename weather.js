@@ -137,9 +137,7 @@ ${tomorrowWind.map(p => `<p>💨 Strong Wind: ${p}</p>`).join("")}
 ${tomorrowSnowstorm.map(p => `<p>🌨 Snowstorm: ${p}</p>`).join("")}
 `;
 
-
-
-        updateBusDisplay();
+updateBusDisplay();
 
     } catch (error) {
 
@@ -150,13 +148,9 @@ ${tomorrowSnowstorm.map(p => `<p>🌨 Snowstorm: ${p}</p>`).join("")}
         <p>Unable to load weather.</p>
     `;
 
-    
-
-        updateBusDisplay();
+    updateBusDisplay();
     }
 }
-
-
 
 function findWeatherPeriods(times, codes, type) {
 
