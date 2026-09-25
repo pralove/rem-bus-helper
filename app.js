@@ -83,12 +83,25 @@ function todayServiceDate() {
 function updateBusDisplay() {
 
     const now = new Date();
+
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+    const day = now.getDay();
+
+const serviceRunning =
+    day >= 1 && day <= 5;
 
     const upcoming = trips.filter(trip => {
         const [h, m] = trip[0].split(":").map(Number);
         return (h * 60 + m) >= currentMinutes;
     });
+
+    const previousTrips = trips.filter(trip => {
+
+    const [h, m] = trip[0].split(":").map(Number);
+
+    return (h * 60 + m) < currentMinutes;
+});
 
     let html = `
         ${weatherText}
@@ -101,7 +114,7 @@ function updateBusDisplay() {
 </p>
     `;
 
-    if (upcoming.length > 0) {
+    if (serviceRunning && upcoming.length > 0) {
 
         html += `
             <h3>📅 Today's Service</h3>
@@ -171,7 +184,7 @@ ${safeDiffMs > 0 ? `
         <h3>All Remaining Trips Today</h3>
         `;
 
-        upcoming.forEach(trip => {
+        upcoming.slice(1).forEach(trip => {
 
             const color = trip[1] === "490"
                 ? "#0066cc"
@@ -190,6 +203,38 @@ ${safeDiffMs > 0 ? `
             </p>
             `;
         });
+
+        if (previousTrips.length > 0) {
+
+    html += `
+<div style="
+    background:#f2f2f2;
+    padding:15px;
+    border-radius:10px;
+    margin-top:10px;
+">
+    <h3>🕒 Previous Trips</h3>
+`;
+
+    previousTrips.forEach(trip => {
+
+        const color = "#888888";
+
+        html += `
+        <p style="
+            color:${color};
+            font-weight:bold;
+        ">
+            ${trip[0]} |
+            Bus ${trip[1]} |
+            ${trip[2]} |
+            Arrive REM ${trip[3]} |
+            Catch REM ${nextREM(trip[3])}
+        </p>
+        `;
+    });
+    html += `</div>`;
+}
 
     } else {
 
