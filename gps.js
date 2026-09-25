@@ -42,3 +42,30 @@ function findClosestStop() {
 
     nearestStop = closest;
 }
+
+function distanceToNearestStop() {
+
+    if (
+        userLatitude === null ||
+        userLongitude === null ||
+        !nearestStop
+    ) {
+        return null;
+    }
+
+    const stop = stopLocations[nearestStop];
+
+    const latDiff =
+        userLatitude - stop.lat;
+
+    const lonDiff =
+        userLongitude - stop.lon;
+
+    const distanceDegrees =
+        Math.sqrt(
+            Math.pow(latDiff, 2) +
+            Math.pow(lonDiff, 2)
+        );
+
+    return Math.round(distanceDegrees * 111000);
+}

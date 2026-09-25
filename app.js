@@ -181,6 +181,28 @@ const countdownMinutes =
 const countdownSeconds =
     Math.floor((safeDiffMs % 60000) / 1000);
 
+    const distanceMeters =
+    distanceToNearestStop();
+
+const walkMinutes =
+    distanceMeters
+        ? Math.max(1, Math.ceil(distanceMeters / 80))
+        : null;
+
+const driveMinutes =
+    distanceMeters
+        ? Math.max(1, Math.ceil(distanceMeters / 500))
+        : null;
+
+const walkReachable =
+    walkMinutes !== null &&
+    walkMinutes <= countdownMinutes;
+
+const driveReachable =
+    driveMinutes !== null &&
+    driveMinutes <= countdownMinutes;
+
+
         const color = next[1] === "490"
             ? "#0066cc"
             : "#00aa44";
@@ -199,7 +221,23 @@ const countdownSeconds =
             </p>
 
             <p><strong>Stop:</strong> ${next[2]}</p>
-            <p><strong>Bus Departure:</strong> ${next[0]}</p>
+            <p>🚌 Departure: ${next[0]}</p>
+
+${distanceMeters !== null ? `
+<p>
+🚶 Walk: ${walkMinutes} min
+${walkReachable ? "✅" : "❌"}
+</p>
+
+<p>
+🚗 Drive: ${driveMinutes} min
+${driveReachable ? "✅" : "❌"}
+</p>
+
+<p>
+⏳ Remaining: ${countdownMinutes} min
+</p>
+` : ""}
             <p><strong>Arrive REM:</strong> ${next[3]}</p>
             <p><strong>Catch REM:</strong> ${nextREM(next[3])}</p>
             <p><strong>Arrive McGill:</strong> ${mcGillArrival(nextREM(next[3]))}</p>
