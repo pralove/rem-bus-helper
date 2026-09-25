@@ -240,13 +240,14 @@ const driveReachable =
 
 ${distanceMeters !== null ? `
 <p>
-🚶 Walk: ${walkMinutes} min
+🚶 Walk: ${formatMinutes(walkMinutes)}
 ${walkReachable ? "✅" : "❌"}
 </p>
 
 <p>
-🚗 Drive: ${driveMinutes} min
+🚗 Drive: ${formatMinutes(driveMinutes)}
 ${driveReachable ? "✅" : "❌"}
+``
 </p>
 
 <p>
