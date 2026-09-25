@@ -95,9 +95,7 @@ function formatMinutes(totalMinutes) {
 function updateBusDisplay() {
 
     const now = new Date();
-now.setHours(9);
-now.setMinutes(0);
-now.setSeconds(0);
+
 
     
 
