@@ -84,9 +84,41 @@ function updateBusDisplay() {
 
     const now = new Date();
 
+    
+
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
     const day = now.getDay();
+
+    if (day === 0 || day === 6) {
+
+    result.innerHTML = `
+        ${weatherText}
+
+        <h3>Current Time</h3>
+        <p>${now.toLocaleTimeString()}</p>
+
+        <p>
+            <strong>📍 Nearest Stop:</strong>
+            ${nearestStop || "Location unavailable"}
+        </p>
+
+        <h3>📅 Next Service Day</h3>
+        <p>${nextServiceDate()}</p>
+
+        <div style="
+            background:#fff3cd;
+            padding:15px;
+            border-radius:10px;
+            margin-top:10px;
+        ">
+            <h2>🌙 Weekend - No Scheduled Service</h2>
+            <p>Next service resumes on Monday.</p>
+        </div>
+    `;
+
+    return;
+}
 
 const serviceRunning =
     day >= 1 && day <= 5;
