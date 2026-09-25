@@ -246,12 +246,6 @@ ${driveReachable ? "✅" : "❌"}
             <p><strong>Arrive McGill:</strong> ${mcGillArrival(nextREM(next[3]))}</p>
             <p><strong>Wait at REM:</strong> ${waitTime(next[3])} min</p>
 
-${safeDiffMs > 0 ? `
-<p>
-    <strong>⏳ Bus leaves in:</strong>
-    ${countdownMinutes}:${String(countdownSeconds).padStart(2, "0")}
-</p>
-` : ""}
         </div>
 
         <h3>All Remaining Trips Today</h3>
