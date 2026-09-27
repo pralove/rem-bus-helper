@@ -108,17 +108,20 @@ function updateBusDisplay() {
     result.innerHTML = `
         ${weatherText}
 
-        <h3>Current Time</h3>
-        <p>${now.toLocaleTimeString()}</p>
+        <div style="font-weight:bold; margin:10px 0;">
+    🕒 Current Time: ${now.toLocaleTimeString()}
+</div>
+<br>
 
-        <p>
-            <strong>📍 Nearest Stop:</strong>
-            ${nearestStop || "Location unavailable"}
-        </p>
+<div>
+    <strong>📍 Nearest Stop:</strong>
+    ${nearestStop || "Location unavailable"}
+</div>
 
-        <h3>📅 Next Service Day</h3>
-        <p>${nextServiceDate()}</p>
+<br>
 
+<h3 style="margin:2px 0;">📅 Next Service Day</h3>
+<div>📆 ${nextServiceDate()}</div>
         <div style="
             background:#fff3cd;
             padding:15px;
@@ -129,7 +132,7 @@ function updateBusDisplay() {
             <p>Next service resumes on Monday.</p>
         </div>
 
-<h3>📋 Monday Schedule</h3>
+<h3 style="margin:8px 0 4px 0;">📍 Monday Schedule</h3>
     `;
 
     trips.forEach(trip => {
@@ -172,14 +175,18 @@ const serviceRunning =
 });
 
     let html = `
-        ${weatherText}
+    ${weatherText}
 
-        <h3>Current Time</h3>
-        <p>${now.toLocaleTimeString()}</p>
-        <p>
+    <br>
+
+    <div style="font-weight:bold; margin:10px 0;">
+    🕒 Current Time: ${now.toLocaleTimeString()}
+</div>
+        <div>
     <strong>📍 Nearest Stop:</strong>
     ${nearestStop || "Location unavailable"}
-</p>
+</div>
+
     `;
 
     if (serviceRunning && upcoming.length > 0) {
@@ -268,7 +275,6 @@ ${walkReachable ? "✅" : "❌"}
 <p>
 🚗 Drive: ${formatMinutes(driveMinutes)}
 ${driveReachable ? "✅" : "❌"}
-``
 </p>
 
 <p>
@@ -340,8 +346,9 @@ ${driveReachable ? "✅" : "❌"}
     } else {
 
         html += `
-            <h3>📅 Next Service Day</h3>
-            <p>${nextServiceDate()}</p>
+            <h3 style="margin:2px 0;">📅 Next Service Day</h3>
+<div>📆 ${nextServiceDate()}</div>
+``
         `;
 
         html += `

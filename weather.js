@@ -5,10 +5,15 @@ async function loadWeather() {
     try {
 
         const response = await fetch(
-            "https://api.open-meteo.com/v1/forecast?latitude=45.40&longitude=-74.04&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=weather_code,wind_speed_10m&timezone=America%2FToronto"
+            "https://api.open-meteo.com/v1/forecast?latitude=45.40&longitude=-74.04&current=temperature_2m,apparent_temperature&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=weather_code,wind_speed_10m&timezone=America%2FToronto"
         );
 
         const data = await response.json();
+        const currentTemp =
+    Math.round(data.current.temperature_2m);
+
+const feelsLike =
+    Math.round(data.current.apparent_temperature);
         if (!data.hourly) {
     throw new Error("Weather data unavailable");
 }
@@ -114,27 +119,28 @@ const tomorrowSnowstorm =
 weatherText = `
     <h3>🌤 Weather</h3>
 
-    <p>
-        <strong>Today</strong> ${todayWeather}<br>
-        High ${todayHigh}°C | Low ${todayLow}°C
-    </p>
+    <div>
+    <strong>Today</strong> ${todayWeather}<br>
+    🌡 ${currentTemp}°C | Feels Like ${feelsLike}°C<br>
+    🌡 High ${todayHigh}°C | Low ${todayLow}°C
+</div>
 
-    ${todayRain.map(p => `<p>☔ Rain: ${p}</p>`).join("")}
-${todaySnow.map(p => `<p>❄️ Snow: ${p}</p>`).join("")}
-${todayStorm.map(p => `<p>⛈ Storm: ${p}</p>`).join("")}
-${todayWind.map(p => `<p>💨 Strong Wind: ${p}</p>`).join("")}
-${todaySnowstorm.map(p => `<p>🌨 Snowstorm: ${p}</p>`).join("")}
+${todayRain.map(p => `<div>☔ Rain: ${p}</div>`).join("")}
+${todaySnow.map(p => `<div>❄️ Snow: ${p}</div>`).join("")}
+${todayStorm.map(p => `<div>⛈ Storm: ${p}</div>`).join("")}
+${todayWind.map(p => `<div>💨 Strong Wind: ${p}</div>`).join("")}
+${todaySnowstorm.map(p => `<div>🌨 Snowstorm: ${p}</div>`).join("")}
 
-    <p>
-        <strong>Tomorrow</strong> ${tomorrowWeather}<br>
-        High ${tomorrowHigh}°C | Low ${tomorrowLow}°C
-    </p>
+    <div style="margin-top:8px;">
+    <strong>Tomorrow</strong> ${tomorrowWeather}<br>
+    🌡 High ${tomorrowHigh}°C | Low ${tomorrowLow}°C
+</div>
 
-    ${tomorrowRain.map(p => `<p>☔ Rain: ${p}</p>`).join("")}
-${tomorrowSnow.map(p => `<p>❄️ Snow: ${p}</p>`).join("")}
-${tomorrowStorm.map(p => `<p>⛈ Storm: ${p}</p>`).join("")}
-${tomorrowWind.map(p => `<p>💨 Strong Wind: ${p}</p>`).join("")}
-${tomorrowSnowstorm.map(p => `<p>🌨 Snowstorm: ${p}</p>`).join("")}
+${tomorrowRain.map(p => `<div>☔ Rain: ${p}</div>`).join("")}
+${tomorrowSnow.map(p => `<div>❄️ Snow: ${p}</div>`).join("")}
+${tomorrowStorm.map(p => `<div>⛈ Storm: ${p}</div>`).join("")}
+${tomorrowWind.map(p => `<div>💨 Strong Wind: ${p}</div>`).join("")}
+${tomorrowSnowstorm.map(p => `<div>🌨 Snowstorm: ${p}</div>`).join("")}
 `;
 
 updateBusDisplay();
