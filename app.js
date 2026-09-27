@@ -108,19 +108,16 @@ function updateBusDisplay() {
     result.innerHTML = `
         ${weatherText}
 
-        <div style="font-weight:bold; margin:10px 0;">
+        <div style="font-weight:bold; margin:6px 0;">
     🕒 Current Time: ${now.toLocaleTimeString()}
 </div>
-<br>
 
-<div>
+<div style="margin-top:4px;">
     <strong>📍 Nearest Stop:</strong>
     ${nearestStop || "Location unavailable"}
 </div>
 
-<br>
-
-<h3 style="margin:2px 0;">📅 Next Service Day</h3>
+<h3 style="margin:6px 0 2px 0;">Next Service Day</h3>
 <div>📆 ${nextServiceDate()}</div>
         <div style="
             background:#fff3cd;
@@ -177,17 +174,15 @@ const serviceRunning =
     let html = `
     ${weatherText}
 
-    <br>
+    <div style="font-weight:bold; margin:6px 0;">
+        🕒 Current Time: ${now.toLocaleTimeString()}
+    </div>
 
-    <div style="font-weight:bold; margin:10px 0;">
-    🕒 Current Time: ${now.toLocaleTimeString()}
-</div>
-        <div>
-    <strong>📍 Nearest Stop:</strong>
-    ${nearestStop || "Location unavailable"}
-</div>
-
-    `;
+    <div style="margin-top:4px;">
+        <strong>📍 Nearest Stop:</strong>
+        ${nearestStop || "Location unavailable"}
+    </div>
+`;
 
     if (serviceRunning && upcoming.length > 0) {
 
@@ -346,9 +341,8 @@ ${driveReachable ? "✅" : "❌"}
     } else {
 
         html += `
-            <h3 style="margin:2px 0;">📅 Next Service Day</h3>
+           <h3 style="margin:6px 0 2px 0;">Next Service Day</h3>
 <div>📆 ${nextServiceDate()}</div>
-``
         `;
 
         html += `
