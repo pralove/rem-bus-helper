@@ -128,9 +128,32 @@ function updateBusDisplay() {
             <h2>🌙 Weekend - No Scheduled Service</h2>
             <p>Next service resumes on Monday.</p>
         </div>
+
+<h3>📋 Monday Schedule</h3>
     `;
 
-    return;
+    trips.forEach(trip => {
+
+    const color =
+        trip[1] === "490"
+            ? "#0066cc"
+            : "#00aa44";
+
+    result.innerHTML += `
+        <p style="
+            color:${color};
+            font-weight:bold;
+        ">
+            ${trip[0]} |
+            Bus ${trip[1]} |
+            ${trip[2]} |
+            Arrive REM ${trip[3]} |
+            Catch REM ${nextREM(trip[3])}
+        </p>
+    `;
+});
+
+return;
 }
 
 const serviceRunning =
