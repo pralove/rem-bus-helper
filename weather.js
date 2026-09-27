@@ -102,9 +102,10 @@ const tomorrowWind =
     if (code === 85 || code === 86) {
 
         snowstormPeriods.push(
-            new Date(times[i]).toLocaleTimeString([], {
-                hour: 'numeric'
-            })
+            new Date(times[i]).toLocaleTimeString('en-CA', {
+    hour: 'numeric',
+    hour12: true
+})
         );
     }
 });
@@ -189,10 +190,16 @@ function findWeatherPeriods(times, codes, type) {
             const end = matches ? i : i - 1;
 
             const startTime =
-    new Date(times[start]).toLocaleTimeString([], {hour:'numeric'});
+    new Date(times[start]).toLocaleTimeString('en-CA', {
+        hour: 'numeric',
+        hour12: true
+    });
 
 const endTime =
-    new Date(times[end]).toLocaleTimeString([], {hour:'numeric'});
+    new Date(times[end]).toLocaleTimeString('en-CA', {
+        hour: 'numeric',
+        hour12: true
+    });
 
 const date =
     times[start].split("T")[0];
@@ -241,10 +248,16 @@ function findWindPeriods(times, winds) {
     times[start].split("T")[0];
 
 const startTime =
-    new Date(times[start]).toLocaleTimeString([], {hour:'numeric'});
+    new Date(times[start]).toLocaleTimeString('en-CA', {
+        hour: 'numeric',
+        hour12: true
+    });
 
 const endTime =
-    new Date(times[end]).toLocaleTimeString([], {hour:'numeric'});
+    new Date(times[end]).toLocaleTimeString('en-CA', {
+        hour: 'numeric',
+        hour12: true
+    });
 
 if (start === end) {
 
